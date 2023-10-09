@@ -1,0 +1,458 @@
+\documentclass[letterpaper]{article} 
+\usepackage[left = 0.5in, right = 0.5in, top = 0.9in, bottom = 0.9in]{geometry}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz-cd}
+\usepackage{mathrsfs}
+\usepackage[bbgreekl]{mathbbol}
+\usepackage{dsfont}
+\usepackage{graphicx}
+\graphicspath{{img/}}
+
+
+\newcommand{\op}{\operatorname}
+\newcommand{\Op}{^{\op{op}}}
+\newcommand{\scc}{\mathscr C}
+\newcommand{\scd}{\mathscr D}
+\newcommand{\sce}{\mathscr E}
+\newcommand{\sci}{\mathscr I}
+\newcommand{\scj}{\mathscr J}
+\newcommand{\scx}{\mathscr X}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inv}{^{-1}}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\ent}{\Longrightarrow}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\1}{\mathds{1}}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+\theoremstyle{definition}
+\newtheorem{dfn}{Definición}
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}
+\theoremstyle{definition}
+\newtheorem{cor}{Corolario}
+\theoremstyle{definition}
+\newtheorem{prop}{Proposición}
+\theoremstyle{definition}
+\newtheorem{obs}{Observación}
+
+
+\title{\textbf{Modelos Estocásticos en Finanzas\\
+Tarea 2}}
+\author{Iván Irving Rosas Domínguez}
+\date{\today}
+
+\DeclareSymbolFontAlphabet{\mathbbm}{bbold}
+\DeclareSymbolFontAlphabet{\mathbb}{AMSb}
+\DeclareMathSymbol\bbDelta  \mathord{bbold}{"01}
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+\textbf{Problema 1.-} Considere el problema de inversión óptima visto en clase, dado por: dado $X_0$, encuentre el proceso adaptado $\Delta_0,...,\Delta_{N-1}$
+que maximiza
+\[
+\E\left[U(X_N)\right],    
+\]
+sujeto a la condición 
+\[
+X_{n+1}=\Delta_nS_{n+1}+(1+r)(X_n-\Delta_nS_n), \quad n=0,1,...,N-1.    
+\]
+\begin{enumerate}
+    \item[\textbf{1.}] Considere el Problema 1 para un modelo $N-$binomial con función de utilidad $U(x)=\ln(x)$. Muestre que el proceso de la riqueza óptima
+    correspondiente al proceso de portafolio óptimo está dado por $X_n=\frac{X_0}{\zeta_n}$, $n=0,...,N-1$, donde $\zeta_n$ es el proceso de 
+    densidad de precio visto en clase dado por
+    \[
+    \zeta_n=\frac{Z_n}{(1+r)^{N}}.    
+    \]
+    \begin{proof} 
+       En clase se vio que el problema 1 podía bien ser reducido al siguiente problema:
+
+       \textbf{Problema 1.1.-} Dado $X_0$, hallar un vector $(x_1,...,x_M)$ que maximiza 
+       \[
+       \sum_{m=1}^{M}p_mU(x_m), 
+       \] 
+       sujeto a la restricción 
+       \[
+       \sum_{m=1}^M p_mx_m\zeta_m=X_0,
+       \]
+       donde $p_m=\P(\omega^m)$, $x_m=X_N(\omega^m)$, $\zeta_m=\zeta(\omega^{m})$ y $\omega^m$ es una de las $2^{M}$ posibles sucesiones
+       de volados en un modelo $N$-binomial a $N$ periodos, con $M=2^{M}$.\\
+       
+       El problema anterior es equivalente al problema inicial y puede ser resuelto utilizando 
+       multiplicadores de Lagrange. Para ello, se dedujo que el lagrangiano $L$ era 
+       \[
+        L=\sum_{m=1}^{M}p_mU(x_m)-\lambda \left(\sum_{m=1}^Mx_m\zeta_mp_m-X_0\right),
+       \]   
+       de tal forma que $U'(X_N)=\lambda\zeta_N=\frac{\lambda Z_N}{(1+r)^N},$ donde $Z$ es la
+       derivada de Radon-Nikodým de $\tilde{\P}$ la medida de riesgo neutral con respecto a $\P$ la medida
+       de riesgo real, y $Z_n=\E\left[Z|F_n\right]$ es el n-ésimo elemento del proceso derivada de Radón-Nikodým.
+       
+       Recordando que $U$ es una función que suponemos cóncava, su derivada es monótona creciente y
+       por lo tanto tiene una inversa. Luego, 
+       \[
+       X_N=I \left(\frac{\lambda Z_n}{(1+r)^N}\right),
+       \]
+       donde $I$ es la función inversa de $U'$, y se encuentra la solución primero hallando
+       $\lambda$ a partir de la ecuación 
+       \[
+       X_0=\E\left[\frac{Z_n}{(1+r)^N}I \left(\frac{\lambda Z_n}{(1+r)^N}\right)\right] 
+       \]
+       y posteriormente hallando $X_N$ con la ecuación 
+       \[
+        X_N=I \left(\frac{\lambda Z_N}{(1+r)^N}\right).
+       \]
+       Dado que en nuestro caso, tenemos que $U(x)=\ln(x)$, la cual es claramente
+       una función cóncava, se deduce que $U'(x)=\frac{1}{x}$ y con ello $I(y)=\frac{1}{y}$.
+       Luego, dado que nosotros ya estamos suponiendo que hay un proceso de portafolio que 
+       alcanza riqueza óptima $X_N$, entonces se deben de cumplir las condiciones del problema $1.1$ 
+       anteriormente escrito. Hallamos pues $\lambda$ de la primera de las dos ecuaciones anteriores:
+        \begin{align*}
+            X_0=\E\left[\frac{Z_n}{(1+r)^N}I \left(\frac{\lambda Z_n}{(1+r)^N}\right)\right]&=\E\left[\frac{Z_n}{(1+r)^N} \left(\frac{(1+r)^N}{\lambda Z_n}\right)\right]\\
+            &=\E\left[\frac{1}{\lambda}\right]=\frac{1}{\lambda},
+        \end{align*}
+        y una vez que tenemos lo anterior, calculamos $X_N$:
+        \[
+        X_N= I \left(\frac{\lambda Z_n}{(1+r)^N}\right)=\frac{(1+r)^{N}}{\lambda Z_n}=\frac{X_0}{(1+r)^N},
+        \]
+        de tal forma que para $N$, el valor óptimo de la riqueza está dado por 
+        \[
+        X_N=\frac{X_0}{(1+r)^{N}},    
+        \]
+        en este caso en el que $U(x)=\ln(x)$. Luego, para calcular el resto del proceso de riqueza, hacemos
+        uso de que el proceso 
+        \[
+        \left(\frac{X_n}{(1+r)^n}\right)_{n\geq0},    
+        \]
+        es una $\tilde{P}$-martingala con respecto a la filtración generada por los volados. Tenemos 
+        así que 
+        \begin{align*}
+            \frac{X_n}{(1+r)^n}&=\tilde{\E}\left[\frac{X_N}{(1+r)^N}\big|\F_n\right]\\
+            &=\tilde{\E}\left[\frac{X_0}{\zeta_N(1+r)^N}\big|\F_n\right]\\
+            &=\tilde{\E}\left[\frac{X_0\cdot (1+r)^N}{Z_N(1+r)^N}\big|\F_n\right]\\
+            &=X_0\tilde{\E}\left[\frac{1}{Z_N}\big|\F_n\right],\\
+        \end{align*}
+        por lo que resta investigar el comportamiento de la última esperanza condicional.
+        Por definición, sabemos que $Z_N=Z$ es la derivada de Radón-Nikodým de $\tilde{\P}$ con respecto
+        a $\P$, la cual, en nuestro contexto, está definida para $\omega^{m}$ alguna de todas las 
+        posibles sucesiones de volados, como
+        \[
+            Z(\omega^m)=\frac{\tilde{\P}(\omega^m)}{\P(\omega^m),}
+        \]
+        La variable está bien definida pues las probabilidades son siempre positivas, y además, se vio en clase que
+        $\tilde{\E}\left[Z\right]=1$ y que $\tilde{\E}\left[Y\big|\F_n\right]=\frac{1}{Z_n}\E\left[Z_mY\big|\F_n\right]$, para 
+        $Y\in \F_n$. Obsérvese que podemos definir a la variable $Z':=\frac{1}{Z}$, de tal forma que
+        \[
+        Z'(\omega^{m})=\left(\frac{\tilde{\P}(\omega^m)}{\P(\omega^m)}\right)^{-1}=\frac{\P(\omega^m)}{\tilde{\P}(\omega^m)},
+        \]
+        la cual es la derivada de Radón-Nikodým de $\P$ con respecto a $\tilde{\P}$. Y esta variable va a cumplir exactamente
+        las mismas condiciones que $Z$, así como su proceso derivada. En particular, tendremos que 
+        \[
+            \tilde{\E}\left[\frac{1}{Z_N}\big|\F_n\right]=\tilde{\E}\left[\frac{1}{Z}\big|\F_n\right]=\tilde{\E}\left[Z'\big|\F_n\right]=Z'_n=\frac{1}{Z_n},
+        \]
+        por lo que volviendo a nuestra ecuación de interés, se sigue que 
+        \[
+            \frac{X_n}{(1+r)^n}=X_0\tilde{\E}\left[\frac{1}{Z_N}\big|\F_n\right]=\frac{X_0}{Z_n},
+        \]
+        por lo que despejando, se tiene que para cualquier $n\in \{0,1,...,N-1\}$,
+        \[
+        X_n=\frac{X_0\cdot(1+r)^n}{Z_n}=\frac{X_0}{\zeta_n},    
+        \]
+        tal y como buscábamos.
+    \end{proof}
+    \item[\textbf{2.}] Considere el Problema 1 para un modelo $N$-binomial con función de utilidad
+    $U(x)=\frac{1}{p}x^{p}$ con $p<1$ y $p\neq0$. Muestre que la riqueza óptima al tiempo 
+    $N$ está dada por
+    \[
+    X_N=\frac{X_0(1+r)^{N}Z^{\frac{1}{p-1}}}{\E\left[Z^{\frac{p}{p-1}}\right]},    
+    \]
+    donde $Z$ es la derivada de Radon-Nikodým de $\tilde{\P}$ con respecto a $\P$.
+    \begin{proof} 
+          
+      Nuevamente utilizamos el problema $1.1$ para resolver el problema original.
+      Notamos que la función de aversión al riesgo $U(x)=\frac{1}{p}x^{p}$ es una función cóncava, ya que
+      el exponente $p$ es menor a 1 y en particular no es 0 en ningún momento. Incluso cuando $p<0$, la función
+      sigue siendo cóncava. Notamos también que 
+      \[
+      U'(x)=\frac{p}{p}x^{p-1}=x^{p-1}, \qquad p<1, p\neq 0,    
+      \]
+      y esta función es invertible en $(0,\infty)$, y tiene por inversa a 
+      \[
+      I(y)=y^{\frac{1}{p-1}}, \qquad p<1, p\neq 0.
+      \]
+      Por lo tanto, utilizando las ecuaciones
+      \[
+        X_N=I \left(\frac{\lambda Z_N}{(1+r)^N}\right),
+        \]
+        y
+        \[
+        X_0=\E\left[\frac{Z_N}{(1+r)^N}I \left(\frac{\lambda Z_N}{(1+r)^N}\right)\right],
+        \]
+        vistas en clase y ajustadas a este problema, encontramos el multiplicador $\lambda$:
+        \begin{align*}
+            X_0=\E\left[\frac{Z_N}{(1+r)^N}I \left(\frac{\lambda Z_N}{(1+r)^N}\right)\right]&=\E\left[\frac{Z_N}{(1+r)^N}\left(\frac{\lambda Z_n}{(1+r)^N}\right)^{\frac{1}{p-1}}\right]\\
+            &=\E\left[\frac{\lambda^{\frac{1}{p-1}}Z_N^{1+\frac{1}{p-1}}}{(1+r)^{N+\frac{N}{p-1}}}\right]\\
+            &=\frac{\lambda^{\frac{1}{p-1}}}{(1+r)^{\frac{Np}{p-1}}}\E\left[Z_N^{\frac{1}{p-1}}\right]\\
+            &=\frac{\lambda^{\frac{1}{p-1}}}{(1+r)^{\frac{Np}{p-1}}}\E\left[Z^{\frac{1}{p-1}}\right]\\
+        \end{align*}
+        donde hemos usado que $Z_N=Z$, ya que justamente el proceso derivada de Radón-Nikodým es creado
+        a partir de la martingala de Doob con base en la variable $Z$, a saber, $Z_n=\E\left[Z|\F_n\right]$, por lo 
+        que en particular $Z=\E\left[Z|\F_N\right]=Z_N$, ya que $Z$ es $\F_N$-medible, pues es una variable
+        que depende de todos los valores de los volados desde $0$ hasta $N$.\\
+
+        Luego, despejando $\lambda$, tenemos que 
+        \[
+        \lambda^{\frac{1}{p-1}}=\frac{X_0(1+r)^{\frac{Np}{p-1}}}{\E\left[Z^{\frac{1}{p-1}}\right]}.   
+        \]
+        Ya con el valor de $\lambda$, utilizamos la ecuación que nos entrega el valor de la riqueza en el instante $N$, a saber,
+        \begin{align*}
+            X_N=I \left(\frac{\lambda Z}{(1+r)^N}\right)&=\left(\frac{\lambda Z}{(1+r)^N}\right)^{\frac{1}{p-1}}\\
+            &=\lambda^{\frac{1}{p-1}}\frac{Z^{\frac{1}{p-1}}}{(1+r)^{\frac{N}{p-1}}}\\
+            &=\frac{X_0(1+r)^{\frac{Np}{p-1}}}{\E\left[Z^{\frac{1}{p-1}}\right]}\frac{Z^{\frac{1}{p-1}}}{(1+r)^{\frac{N}{p-1}}}\\
+            &=\frac{X_0(1+r)^{\frac{Np}{p-1}-\frac{N}{p-1}}Z^{\frac{1}{p-1}}}{\E\left[Z^{\frac{1}{p-1}}\right]}\\
+            &=\frac{X_0(1+r)^{N}Z^{\frac{1}{p-1}}}{\E\left[Z^{\frac{p}{p-1}}\right]},    
+        \end{align*}
+        tal y como se quería.
+
+        \end{proof}
+    \item[\textbf{3.}] Un inversionista provee una pequeña cantidad de dinero $X_0$ para que se pruebe la efectividad de 
+    una estrategia de inversión sobre los siguientes $N$-periodos. Puedes invertir en el modelo $N$-binomial
+    sujeto a la condición de que el portafolio nunca puede ser negativo. Si al tiempo $N$ el valor del portafolio
+    es a lo menos $\gamma$, una constante positiva especificada por el inversionista, 
+    entonces él te otorgará una gran cantidad de dinero para que se la manejes. Entonces el problema 
+    es el siguiente: 
+
+    Maximizar 
+    \[
+    \P\left(X_N\geq\gamma\right),
+    \]
+    donde $X_N$ es el portafolio comenzando on fortuna $X_0$ bajo la condición de que 
+    \[
+    X_n\geq0, \qquad n\in \{0,1,...,N\}.    
+    \]
+    Podemos reformular el problema como sigue: maximizar 
+    \[
+    \P\left(X_N\geq \gamma\right)    
+    \]
+    sujeto a la restricción
+    \[
+        \tilde{\E}\left[\frac{X_N}{(1+r)^N}\right]=X_0, \qquad X_n\geq0, \qquad n\in \{0,1,...,N\}.
+    \]
+    \begin{enumerate}
+        \item Muestra que si $X_N\geq0$, entonces $X_n\geq0$ para todo $n\geq0$.
+        \begin{proof} 
+          Recordamos nuevamente que el proceso $\left(\frac{X_n}{(1+r)^{n}}\right)_{n\geq0}$ es martingala
+          bajo la medida de riesgo neutral. Luego, dado que por hipótesis estamos suponiendo que $X_N$ es 
+          una variable aleatoria que representa la riqueza al tiempo $N$ acorde a cierto proceso de portafolio,
+          y esta es positiva, entonces por
+          monotonía de la esperanza condicional y el hecho de que $1+r>0$, se tiene que
+          \[
+          0\leq\tilde{\E}\left[\frac{X_N}{(1+r)^{N}}\big|\F_n\right]=\frac{X_n}{(1+r)^{n}}, \qquad n\in \{0,1,...,N-1\},
+          \] 
+          por lo que para cualquier $n\in \{0,1,...,N-1\}$ se sigue que 
+          \[
+          0\leq X_n  
+          \]
+         \end{proof}
+        \item Considera la función 
+        \begin{equation*}
+            U(x) = \begin{cases}
+                    0, & \text{si } 0\leq x\leq \gamma,\\
+                    1, & \text{si } x\geq \gamma.
+                    \end{cases}
+        \end{equation*}
+    Muestra que para cada $y>0$ fija, se tiene que $$U(x)-yx\leq U(I(y))-yI(y)$$    
+    para toda $x\geq0$, donde 
+    \begin{equation*}
+        I(y)=\begin{cases}
+            \gamma, & \text{si } 0<y\leq \frac{1}{\gamma},\\
+            0, & \text{si } \frac{1}{\gamma}.
+        \end{cases}
+    \end{equation*}
+    \begin{proof} 
+      Observamos que las funciones $U$ e $I$ pueden ser escritas como: $U:[0,\infty)\to \R$, $U(x)=\1_{[0,\frac{1}{\gamma}]}(x)$ y  $I:(0,\infty)\to \R$, $I(y)=\gamma\1_{[\gamma,\infty)}(y)$.
+      Sean $y>0$ y $x\geq0$. Procedemos a probar la desigualdad anterior por casos:
+      \begin{itemize}
+        \item[$0< y \leq \frac{1}{\gamma}$:] en este caso, $I(y)=\gamma$, por lo que 
+        \begin{align*}
+            U(x)-yx\leq U(I(y))-yI(y)&\Longleftrightarrow\1_{[\gamma,\infty)}(x)-yx\leq U(\gamma)-y\gamma\\
+            &\Longleftrightarrow \1_{[\gamma,\infty)}(x)-yx\leq \1_{[\gamma,\infty)}(\gamma)-y\gamma\\
+            &\Longleftrightarrow \1_{[\gamma,\infty)}(x)+y\gamma\leq 1+yx.
+        \end{align*}
+        Luego, si $x<\gamma$, entonces la indicadora de la izquierda en la expresión anterior es 0 y 
+        \[
+            U(x)-yx\leq U(I(y))-yI(y) \Longleftrightarrow y\gamma\leq 1+yx,
+        \]
+        pero dado que $0<y<\frac{1}{\gamma}$, se tiene que $y\gamma\leq 1\leq 1+yx$, pues $y>0$ y $x\geq0$, por lo que
+        la desigualdad se da. Por otro lado, si $x\leq\gamma$, entonces 
+        \[
+            U(x)-yx\leq U(I(y))-yI(y) \Longleftrightarrow 1+ y\gamma\leq 1+yx \Longleftrightarrow \gamma\leq x,
+        \]
+        lo cual es justamente lo que estamos suponiendo. Por lo tanto, la desigualdad se da nuevamente. 
+        \item[$y\geq\frac{1}{\gamma}$:] en este caso, $I(y)=0$ y por lo tanto, 
+        \begin{align*}
+            U(x)-yx\leq U(I(y))-yI(y)&\Longleftrightarrow U(x)-yx\leq U(0)-y\cdot0\\
+            &\Longleftrightarrow \1_{[\gamma,\infty)}(x)-yx\leq \1_{[\gamma,\infty)}(0)\\
+            &\Longleftrightarrow \1_{[\gamma,\infty)}(x)\leq yx,
+        \end{align*}
+        por lo que si $x<\gamma$, entonces 
+        \[
+            U(x)-yx\leq U(I(y))-yI(y)\Longleftrightarrow \1_{[\gamma,\infty)}(x)\leq yx \Longleftrightarrow 0\leq xy,
+        \] 
+        pero esto último ocurre pues $x\geq0$ y $y>0$. Por otro lado, si $x\geq\gamma$, entonces
+        \[
+            U(x)-yx\leq U(I(y))-yI(y)\Longleftrightarrow \1_{[\gamma,\infty)}(x)\leq yx \Longleftrightarrow1\leq xy,
+        \]
+        pero dado que $y\geq \frac{1}{\gamma}$, entonces $xy\geq 1$, por lo que la desigualdad ocurre en ambos casos.
+      \end{itemize}
+     \end{proof}
+    \item Suponga que existe una solución $\lambda$ a la ecuación
+           \begin{equation}\label{ec1}
+             \E\left[\frac{Z_N}{(1+r)^N}I \left(\frac{\lambda Z_N}{(1+r)^N}\right)\right]=X_0.
+           \end{equation}
+    Muestre que la $X_N$ óptima está dada por (como se hizo en clase)
+    \[
+        X_N^{*}=I \left(\frac{\lambda Z}{(1+r)^{N}}\right).
+        \]
+        \begin{proof} 
+          Utilizamos el inciso anterior. Notamos que haciendo $x=X_N$ una solución cualquiera al problema anterior, no 
+          necesariamente la óptima, pero la cual es mayor
+          o igual a 0 pues buscamos que se cumplan las condiciones del problema, y haciendo $y=\frac{\lambda Z}{(1+r)^{N}}$, el cual 
+          también es un valor mayor a 0, se deduce que
+          \[
+            U(x)-yx\leq U(I(y))-yI(y)\Longleftrightarrow U(X_N)-X_N\frac{\lambda Z}{(1+r)^N} \leq U\left(I\left(\frac{\lambda Z}{(1+r)^N}\right)\right)-\frac{\lambda Z}{(1+r)^N}I \left(\frac{\lambda Z}{(1+r)^N}\right),
+          \]
+          por lo que tomando esperanzas, y recordando la definición de $X_N^*$, de $X_0$, que $\lambda$ es solución a la ecuación \eqref{ec1} y que $Z$ es la derivada 
+          de Radon-Nikodým de $\tilde{\P}$ con respecto a $\P$, 
+          
+          \begin{align*}
+            \E\left[U(X_N)\right] -&\E\left[X_N\frac{\lambda Z}{(1+r)^N}\right] \leq \E\left[U\left(I\left(\frac{\lambda Z}{(1+r)^N}\right)\right)\right] - \E\left[\frac{\lambda Z}{(1+r)^N}I \left(\frac{\lambda Z}{(1+r)^N}\right)\right]\\
+            &\Longleftrightarrow \E\left[U(X_N)\right] -\lambda\E\left[X_N\frac{Z}{(1+r)^N}\right] \leq \E\left[U\left(I\left(\frac{\lambda Z}{(1+r)^N}\right)\right)\right] - \lambda\E\left[\frac{Z}{(1+r)^N}I \left(\frac{\lambda Z}{(1+r)^N}\right)\right]\\
+            &\Longleftrightarrow \E\left[U(X_N)\right] -\lambda\tilde{\E}\left[\frac{X_N}{(1+r)^N}\right] \leq \E\left[U\left(X_N^*\right)\right] - \lambda X_0\\
+            &\Longleftrightarrow \E\left[U(X_N)\right] -\lambda X_0 \leq \E\left[U\left(X_N^*\right)\right] - \lambda X_0\\
+            &\Longleftrightarrow \E\left[U(X_N)\right] \leq \E\left[U\left(X_N^*\right)\right]\\
+            &\Longleftrightarrow \E\left[\1_{[\gamma,\infty)}(X_N)\right]\leq \E\left[\1_{[\gamma,\infty)}(X_N^{*})\right]\\
+            &\Longleftrightarrow \P\left(X_N\geq \gamma\right) \leq \P\left(X_N^{*}\geq \gamma\right),
+          \end{align*}
+          tal y como queríamos. Por lo tanto, la variable $X_N^*$ dada por la expresión anterior en efecto maximiza 
+          la probabilidad buscada.
+        \end{proof}
+    \item Si en listamos las $M=2^{N}$ posibles secuencias de volados y las etiquetamos por $\omega^1,...,\omega^M$ y 
+    definimos $\zeta_m=\zeta(\omega^{m})$ y $p_m=\P(\omega^m)$. Aquí enlistamos las $\omega_m's$ de 
+    manera que las $\zeta_m's$ sean ascendentes, es decir,
+    \[
+     \zeta_1\leq\zeta_2\leq\dots\leq \zeta_M.    
+    \]
+    Muestre que la suposición de que existe $\lambda$ solución a \eqref{ec1} es equivalente a suponer
+    que para algún entero positivo $K$ tenemos que $\zeta_K<\zeta_{K+1}$ y 
+    \[
+    \sum_{m=1}^{K}\zeta_mp_m=\frac{X_0}{\gamma}.    
+    \]
+    \begin{proof} 
+      Por definición de esperanza y de $\zeta_m$, si suponemos que $\lambda$ es solución a \eqref{ec1}, entonces
+      \[
+     X_0=\E\left[\frac{Z_N}{(1+r)^N}I \left(\frac{\lambda Z_N}{(1+r)^N}\right)\right]=\E\left[\zeta_N I(\lambda\zeta_N)\right]=\E\left[\zeta I(\lambda\zeta)\right]=\sum_{m=1}^{M}\zeta_mI(\lambda\zeta_m)p_m,
+      \] 
+      ahora bien, como $X_0$ lo suponemos estrictamente positivo, entonces 
+      \[
+        \sum_{m=1}^{M}\zeta_mI(\lambda\zeta_m)p_m>0,
+      \]
+      por lo que al ser todos los sumandos positivos, al menos existe un elemento en el conjunto $A=\{m\in \{1,...,M\} : \zeta_mI(\zeta_m\lambda)p_m>0\}$.
+      Dado que $A$ es un subconjunto no vacío de $\N$ que está acotado, entonces tiene máximo. Sea $K=\max A$. Nótese que 
+      \[
+      \zeta_KI(\zeta_K\lambda)p_K>0 \ent I(\zeta_K\lambda)=\gamma\neq 0,
+      \]
+      de donde se deduce que $0<\zeta_K\lambda\leq \frac{1}{\gamma}$ por definición de $I$. Pero lo anterior se traduce en que
+      \[    
+        \zeta_K\leq \frac{1}{\lambda \gamma},
+        \]  
+        por lo que, como los $\zeta_m$ están ordenados de menor a mayor, se tiene que
+        para cualquier $m\in A$ con $m\leq K$, 
+        \[
+        \zeta_m\leq \frac{1}{\lambda \gamma},    
+        \]
+        y con ello, 
+        \[
+        \zeta_mI(\zeta_m\lambda)p_m=\zeta_m\gamma p_m, \qquad \forall \ 1\leq m \leq K,    
+        \]
+        así como para cualquier $m\in A$ con $m>K$, por el mismo orden de los $\zeta_m$, 
+        $$\zeta_mI(\zeta_m\lambda)p_m=0 \ent I(\zeta_m\lambda)=0 \ent \zeta_m\lambda>\frac{1}{\gamma} \ent \zeta_m>\frac{1}{\lambda \gamma},$$
+        así que en particular para $m=K+1$,
+        \[
+        \zeta_K\leq\frac{1}{\lambda\gamma}<\zeta_{K+1},    
+        \]
+        es decir, $\zeta_K<\zeta_{K+1}$.
+
+        Por lo tanto, 
+        \[
+        X_0=\E\left[\zeta \left(\lambda\zeta\right)\right]=\sum_{m=1}^{M}\zeta_mI(\lambda\zeta_m)p_m=\sum_{m=1}^{K}\zeta_mI(\zeta_m\lambda)p_m=\sum_{m=1}^{K}\zeta_m\gamma p_m,   
+        \]
+        de donde se sigue que 
+        \[
+        \sum_{m=1}^{K}\zeta_mp_m=\frac{X_0}{\gamma}.    
+        \]
+        De manera contraria, si se tiene que existe $K\in \{1,...,M\}$ tal que 
+        \[
+        \sum_{m=1}^{K}\zeta_mp_m=\frac{X_0}{\gamma},    
+        \]
+        con $\zeta_K<\zeta_{K+1}$, entonces podemos elegir $\lambda>0$ una constante positiva
+        tal que 
+        \[
+        \lambda\zeta_K<\frac{1}{\gamma},
+        \]
+        de tal forma que, como $\lambda\zeta_K\leq \frac{1}{\gamma}<\lambda\zeta_{K+1}$, con lo 
+        que $I \left(\lambda\zeta_K\right)=\gamma$ y por el orden en los $\zeta_m$, se tiene que 
+        \begin{equation}
+        I(\lambda\zeta_m)=\begin{cases}\label{ec2}
+            \gamma, & \text{si } \lambda\zeta_m\leq \frac{1}{\gamma} \Longleftrightarrow m\leq K,\\
+            0, & \text{si } \lambda\zeta_m > \frac{1}{\gamma} \Longleftrightarrow m>K.
+        \end{cases}    
+        \end{equation}
+        Por lo que 
+        \[
+        X_0=\sum_{m=1}^{K}\zeta_m\gamma p_m=\sum_{m=1}^K\zeta_mI(\lambda\zeta_m)p_m=\sum_{m=1}^M\zeta_mI(\lambda\zeta_m)p_m=\E\left[\zeta I(\lambda\zeta)\right]=\E\left[\frac{Z_N}{(1+r)^N}I \left(\frac{\lambda Z_N}{(1+r)^N}\right)\right],
+        \]
+        y concluimos que $\lambda$ es solución de 
+        \[
+            \E\left[\frac{Z_N}{(1+r)^N}I \left(\frac{\lambda Z_N}{(1+r)^N}\right)\right]=X_0.    
+        \]
+
+     \end{proof}
+    \item Muestre que $X_N^*$ está dado por 
+    \[
+    X_N^{*}(\omega^{m})=\begin{cases}
+        \gamma, & \text{si }m\leq K,\\
+        0, & \text{si } m\geq K+1.
+    \end{cases}    
+    \]
+    \begin{proof} 
+       Del inciso $c)$ y $d)$, y particularmente de \eqref{ec2} tenemos que para $m\in \{1,...,M\}$, 
+       \[
+       X_N^{*}(\omega^{m})=I(\lambda\zeta)(\omega^{m})=I(\lambda\zeta_m)=\begin{cases}
+        \gamma, & \text{si } m\leq K,\\
+        0, & \text{si } m>K.
+       \end{cases} 
+       \]
+     \end{proof}
+    \end{enumerate}
+\end{enumerate}
+\end{document}
