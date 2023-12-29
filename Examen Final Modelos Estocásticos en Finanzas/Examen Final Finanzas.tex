@@ -1,0 +1,414 @@
+\documentclass[letterpaper]{article} 
+\usepackage[left = 0.5in, right = 0.5in, top = 0.9in, bottom = 0.9in]{geometry}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz-cd}
+\usepackage{mathrsfs}
+\usepackage[bbgreekl]{mathbbol}
+\usepackage{dsfont}
+\usepackage{graphicx}
+\graphicspath{{img/}}
+
+\newcommand{\op}{\operatorname}
+\newcommand{\Op}{^{\op{op}}}
+\newcommand{\scc}{\mathscr C}
+\newcommand{\scd}{\mathscr D}
+\newcommand{\sce}{\mathscr E}
+\newcommand{\sci}{\mathscr I}
+\newcommand{\scj}{\mathscr J}
+\newcommand{\scx}{\mathscr X}
+\newcommand{\var}{\mathrm{Var}}
+\newcommand{\Id}{\operatorname{Id}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inv}{^{-1}}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\ent}{\Longrightarrow}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\1}{\mathds{1}}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+\theoremstyle{definition}
+\newtheorem{dfn}{Definición}
+\theoremstyle{definition}
+\newtheorem{teo}{Teorema}
+\theoremstyle{definition}
+\newtheorem{cor}{Corolario}
+\theoremstyle{definition}
+\newtheorem{prop}{Proposición}
+\theoremstyle{definition}
+\newtheorem{obs}{Observación}
+
+
+\title{\textbf{Modelos Estocásticos en Finanzas\\
+Tarea-examen 3}}
+\author{Iván Irving Rosas Domínguez}
+\date{\today}
+
+\DeclareSymbolFontAlphabet{\mathbbm}{bbold}
+\DeclareSymbolFontAlphabet{\mathbb}{AMSb}
+\DeclareMathSymbol\bbDelta  \mathord{bbold}{"01}
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%\end{abstract}
+
+\begin{itemize}
+    \item[\textbf{1.}] Considere la función $v_L$ dada por 
+    \begin{equation}\label{eq1}
+        v_L(x)=
+        \begin{cases}
+            K-x & \text{ si } 0\leq x \leq L,\\
+            (K-L)\left(\frac{x}{L}\right)^{-2r/\sigma^2} & \text{ si } x\geq L.
+        \end{cases}    
+    \end{equation}
+    La primera línea de la ecuación anterior implica que $v_L'(L-)=-1$. Use la segunda 
+    línea de \eqref{eq1} para calcular $v_L'(L+)$. Muestre que el \textit{smooth pasting} dado por 
+    \[
+    v_{L_*}'(L_*-)=v_{L_*}'(L_*+),
+    \]
+    se satisface solo por $L_*$ dado por 
+    \begin{equation}\label{eq6}
+        L_*=\frac{2r}{2r+\sigma^2}K.
+    \end{equation}
+    \begin{proof} 
+      Calculamos la derivada de $v_L$ dada por \eqref{eq1} en el intervalo $[L,\infty)$. Nótese que $L>0$ por lo que las expresiones 
+      de la segunda línea están bien definidas, así que para $x>L$, 
+      \[
+        v_L'(x)=(K-L)\left(-\frac{2r}{\sigma^2}\right)\left(\frac{x}{L}\right)^{-2r/\sigma^2-1}\left(\frac{1}{L}\right)=-\frac{2r(K-L)}{L\sigma^2}\left(\frac{x}{L}\right)^{-2r/\sigma^2-1}.
+      \]
+      Nótese que lo anterior es una función continua de $x$, ya que $x>L>0$. Luego, para calcular la derivada por derecha, hacemos
+      tender $x$ a $L$ por derecha, lo que nos dice que 
+      \[
+      v_L'(L+)=-\frac{2r(K-L)}{L\sigma^2}\left(\frac{L}{L}\right)^{-2r/\sigma^2-1}=-\frac{2r(K-L)}{L\sigma^2}.
+      \]
+      Se sigue que, para que las derivadas por derecha e izquierda de $v_L$ coincidan en $L$, se debe tener que 
+      \[
+      v_L'(L+)=v_L'(L-) \ \iff  \ -1= -\frac{2r(K-L)}{L\sigma^2},
+      \]
+      por lo que resolviendo para $L$, se tiene que 
+      \begin{align*}
+        -1= -\frac{2r(K-L)}{L\sigma^2} &\iff 1= \frac{2r(K-L)}{L\sigma^2}\\
+        &\iff L\sigma^2= 2rK-2rL\\
+        &\iff L(\sigma^2+2r)= 2rK\\
+        &\iff L= \frac{2r}{2r+\sigma^2}K\\
+      \end{align*}
+      por lo que el \textit{smooth pasting}, se logra siempre que 
+      \[
+      L_*=  \frac{2r}{2r+\sigma^2}K.
+      \]
+     \end{proof}
+    \item[\textbf{2.}] Considere dos puts Americanos perpetuos con base en un movimiento 
+    browniano geométrico dado por 
+    \[
+    dS(t)=rS(t)dt+\sigma S(t)d\widetilde{W}(t)    
+    \]
+    Supongamos que los puts tienen diferentes precios de strike, $K_1$ y $K_2$, donde $0<K_1<K_2$. Sean 
+    $v_1(x)$ y $v_2(x)$ sus respectivos precios (como se calculó en clase). Muestre que $v_2(x)$ satisface 
+    las primeras dos condiciones lineales 
+    \begin{eqnarray}
+        v_2(x)\geq (K_1-x)^{+} & \text{ para todo } x\geq 0,\label{eq2}\\ 
+        rv_2(x)-rxv_2'(x)-\frac{1}{2}\sigma^2x^2v_2''(x)\geq 0 & \text{ para todo } x\geq0\label{eq3}, 
+    \end{eqnarray}   
+    para el precio del put Americano perpetuo con precio de strike $K_1$ pero que $v_2(x)$ no satisface la 
+    tercera condición dada por: 
+    \[
+    \text{Para toda } x\geq0 \text{ la igualdad se da en \eqref{eq2} o en \eqref{eq3} o en ambas.}    
+    \]  
+    \begin{proof} 
+    Recordamos que, de acuerdo a lo visto en clase, para el precio $K_1$ y $K_2$, las funciones $v_1$ y $v_2$ están 
+    dadas por
+    \[v_i(x)= 
+    \begin{cases}
+        (K_i-x) & \text{ si } 0\leq x \leq L\\
+        (K_i-L)\left(\frac{x}{L}\right)^{-\frac{2r}{\sigma^2}} & \text{ si } L\leq x,
+    \end{cases}
+    \] 
+    por lo que vemos que $v_2$ cumple las primeras dos condiciones $\eqref{eq2}$ y $\eqref{eq3}$:
+    \begin{itemize}
+        \item Nótese que para $x\geq0$, si $0\leq x\leq L$, entonces directamente de la definición 
+        de $v_2(x)$ se tiene que $v_2(x)=K_2-x$, luego, como $0<K_1<K_2$, se tiene que 
+        \[
+        v_2(x)\geq K_1-x=(K_1-x)^{+},    
+        \]
+        donde la última igualdad se debe a que el valor $L$ el valor de la barrera inferior al precio de strike $K$ se escoge justamente 
+        tal que $0<L<K_1<K_2$. 
+        Por lo tanto, en $[0,L]$ se cumple la condición $\eqref{eq2}$. Supongamos ahora que 
+        $L\leq x$. Nótese así que
+        \[
+            v_2(x)=(K_2-L)\left(\frac{x}{L}\right)^{-\frac{2r}{\sigma}^2}\geq (K_2-L)\left(1\right)^{-\frac{2r}{\sigma^2}}=K_2-L.
+        \]
+        Luego, si $K_1-x\geq0$, entonces $K_2-L\geq K_1-x\geq0$, y con ello, $v_2(x)\geq (K_1-L)^{+}$.
+        Por otro lado, si $K_1-x\leq0$, entonces $K_2-L\geq0$ pues $0\leq L< K_1<K_2$ y con ello, $v_2(x)=K_2-L\geq0=(K_1-x)^{+}$.
+        En cualquier caso, se cumple la primera condición \eqref{eq2}.
+        \item Supongamos que $0\leq x\leq L$. Es claro en este caso que las primeras y segundas derivadas de $v_2$ están 
+        dadas por 
+        \[
+            v'_2(x)=-1 \qquad \text{ y } \qquad v'_2(x)=0,
+        \]
+        por lo que la ecuación \eqref{eq3} está dada para $v_2$ por 
+        \[
+        r(K_2-x)-rx(-1)-0=rK_2-rx+rx=rK_2\geq0, 
+        \]
+        por lo que se cumple la condición \eqref{eq3}. Supongamos ahora que $L\leq x$, entonces 
+        las derivadas para $v_2(x)$ en este intervalo están dadas por 
+        \[
+            v_2'(x)=-\frac{2r}{\sigma^2}(K_2-L)L^{2r/\sigma^2}x^{-2r/\sigma^2-1},
+        \]
+        y 
+        \[
+            v_2''(x)=-\frac{2r}{\sigma^2}\left(-\frac{2r}{\sigma^2}-1\right)(K_2-L)L^{2r/\sigma^2}x^{-2r/\sigma^2-2},
+        \]  
+        por lo que entonces la condición de la \eqref{eq3} se vuelve:
+        \[
+          r(K_2-L)x^{-\frac{2r}{\sigma^2}}L^{\frac{2r}{\sigma^2}}-rx \left(-\frac{2r}{\sigma^2}(K_2-L)L^{2r/\sigma^2}x^{-2r/\sigma^2-1}\right)-\frac{1}{2}\sigma^2x^2 \left(-\frac{2r}{\sigma^2}\right) \left(-\frac{2r}{\sigma^2}-1\right)(K_2-L)L^{2r/\sigma^2}x^{-2r/\sigma^2-2},
+        \]
+        la cual al simplificar se vuelve 
+        \[
+            r(K_2-L)x^{-\frac{2r}{\sigma^2}}L^{\frac{2r}{\sigma^2}}+r\frac{2r}{\sigma^2}(K_2-L)L^{2r/\sigma^2}x^{-2r/\sigma^2}+r\left(-\frac{2r}{\sigma^2}-1\right)(K_2-L)L^{2r/\sigma^2}x^{-2r/\sigma^2},
+        \]
+        y al factorizar el término común $r(K_2-L)x^{-\frac{2r}{\sigma^2}}L^{\frac{2r}{\sigma^2}}$, obtenemos que 
+        \[
+            x^{-\frac{2r}{\sigma^2}}L^{\frac{2r}{\sigma^2}} \left(1+\frac{2r}{\sigma^2}-1-\frac{2r}{\sigma^2}\right)=0\geq0,   
+        \]
+        por lo que en efecto se cumple la segunda condición \eqref{eq3}. 
+        \item Resta que veamos que NO se cumplen simultáneamente \eqref{eq2} y \eqref{eq3} (o ambas). Nótese que para ello, basta verificar 
+        la existencia de un $x\in [0,\infty)$ tal que no se cumplan ni la igualdad en \eqref{eq2} ni la igualdad en \eqref{eq3}. Proponemos 
+        $x=\frac{L}{2}$. Es claro que entonces $0<x<L<K_1<K_2$. Notamos que no se da la igualdad en \eqref{eq3}: como $0<x<L$, entonces $v_2(x)=K_2-x$ y así,
+        según las derivadas calculadas antes,
+        \[
+        rv_2(x)-rxv_2'(x)-\frac{1}{2}\sigma^2x^2v_2''(x)=r(K_2-x)-rx(-1)-0=rK_2-rx+rx=rK_2,
+        \]
+        y como $r,K_2>0$ por hipótesis, entonces se da la desigualdad estricta en \eqref{eq3}. Por otro lado, 
+        nótese que tampoco se da la igualdad en \eqref{eq2}, esto ya que 
+        \[
+        v_2(x)=K_2-x.    
+        \]
+        Mientras que 
+        \[   
+            (K_1-x)^{+}=K_1-x,
+        \]
+        porque $0<L/2=x<L<K_1<k_2$. Se sigue que, si se diera la igualdad en \eqref{eq2}, entonces
+        \[
+            K_2-x=K_1-x \iff K_2=K_1,
+        \]
+        lo cual es una contradicción. Por lo tanto, no se da la igualdad en \eqref{eq2} y con ello, 
+        el precio $v_2$ de la opción con precio de strike $K_2>K_1$ no satisface la tercera de las condiciones 
+        lineales complementarias para el precio de strike $K_1$.
+    \end{itemize}
+     \end{proof}
+    \item[\textbf{3.}] Suponga que $v(x)$ es una función continua y acotada con derivada continua 
+    y que satisface 
+    \begin{eqnarray}
+        v(x)\geq (K-x)^{+} & \text{ para todo } x\geq 0,\label{eq4}\\ 
+        rv(x)-rxv'(x)-\frac{1}{2}\sigma^2 x^2v''(x)\geq 0 & \text{ para todo } x\geq0,\label{eq5}\\
+        \text{Para toda } x\geq0 \text{ la igualdad se da en \eqref{eq4} o en \eqref{eq5}.}
+    \end{eqnarray}
+    Este ejercicio muestra que $v(x)$ tiene que ser $v_{L_*}(x)$ dada por $\eqref{eq1}$ con $L_*$ dado por \eqref{eq6}.
+    Suponga que $K$ es estrictamente positiva. 
+    \begin{enumerate}
+        \item Primero, considérese un intervalo de valores en $x$ en el que $v(x)$ satisface 
+        
+        \begin{equation}\label{eq7}
+                rv(x)-rxv'(x)-\frac{1}{2}\sigma^2x^2v''(x)=0.    
+        \end{equation}
+        
+        Esta es una ecuación diferencial de segundo orden lineal, y tiene dos soluciones de la forma 
+        $x^{p}$. Sustituya $x^p$ en \eqref{eq7} y muestre que los únicos valores de $p$ que producen que $x^{p}$ satisfaga
+        \eqref{eq7} son $p=-\frac{2r}{\sigma^2}$ y $p=1$.
+        \begin{proof} 
+          Supongamos que se satisface \eqref{eq7}. Sustituyendo $v(x)=x^{p}$, se tiene que 
+          \[
+            rx^{p}-rxpx^{p-1}-\frac{1}{2}\sigma^2x^2p(p-1)x^{p-2}=0 \iff rx^{p}-rpx^{p}-\frac{1}{2}\sigma^2p(p-1)x^{p}=0,
+          \]
+          y ahora, suponiendo que $x=0$ es un valor dentro del intervalo, se tiene la igualdad anterior. Supongamos ahora que $x\neq0$. Entonces cancelando 
+          términos y resolviendo para $p$, se tiene que 
+          
+          \begin{align*}
+            r-rp-\frac{1}{2}\sigma^2p(p-1)=0 &\iff p^2+p(\frac{2r}{\sigma^2}-1)=\frac{2r}{\sigma^2}\\
+            &\iff p^2+2p \left(\frac{r}{\sigma^2}-\frac{1}{2}\right)+\left(\frac{r}{\sigma^2}-\frac{1}{2}\right)^2=\frac{2r}{\sigma^2}+\left(\frac{r}{\sigma^2}-\frac{1}{2}\right)^2\\
+            &\iff \left(p+\frac{r}{\sigma^2}-\frac{1}{2}\right)^2=\frac{2r}{\sigma^2}+\left(\frac{r}{\sigma^2}-\frac{1}{2}\right)^2\\
+            &\iff \left(p+\frac{r}{\sigma^2}-\frac{1}{2}\right)^2=\frac{r^2}{\sigma^4}+2\frac{r}{\sigma^2}\left(\frac{1}{2}\right)+\frac{1}{4}\\
+            &\iff \abs{p+\frac{r}{\sigma^2}-\frac{1}{2}}=\abs{\frac{r}{\sigma^2}+\frac{1}{2}}\\
+            &\iff \begin{cases}
+                p+\frac{r}{\sigma^2}-\frac{1}{2}=\frac{r}{\sigma^2}+\frac{1}{2} \qquad \iff \qquad p=1\\
+                p+\frac{r}{\sigma^2}-\frac{1}{2}=-\frac{r}{\sigma^2}-\frac{1}{2} \qquad \iff \qquad p=-\frac{2r}{\sigma^2}\\
+                \end{cases}
+          \end{align*}
+          \end{proof}
+        \item Las funciones $x^{-\frac{2r}{\sigma^2}}$ y $x$ son soluciones linealmente independientes 
+        de $\eqref{eq7}$, entonces cualquier solución de $\eqref{eq7}$ debe ser de la forma 
+        \[
+        f(x)=Ax^{-2r/\sigma^2}+Bx,    
+        \]
+        para algunas constantes $A$ y $B$. Use este hecho y el hecho de que $v(x)$ y $v'(x)$ son continuas
+        para mostrar que no puede existir un intervalo $[x_1,x_2]$ con $0<x_1<x_2<\infty$, tal que 
+        $v(x)$ satisface $\eqref{eq7}$ en $[x_1,x_2]$ y satisface 
+        
+        \begin{equation}\label{eq8}
+            v(x)\geq (K-x)^{+}    
+        \end{equation}
+        con igualdad para $x$ en $[x_1,x_2]$ e idénticamente a la izquierda de $x_1$ y para $x$ en inmediatamente 
+        a la derecha de $x_2$ a menos que $v(x)$ sea idénticamente 0 en $[x_1,x_2]$.
+        \begin{proof} 
+         Supongamos que $x_1,x_2$ son números tales que $[x_1,x_2]\subseteq (0,\infty)$ y tales que 
+         $v(x)$ cumple \eqref{eq7} y \eqref{eq8} con igualdad. Esto nos dice que $v(x)=Ax^{-2r/\sigma^2}+Bx$ para algunas constantes
+         $A$ y $B$. Ahora bien, supongamos que el intervalo $[x_1,x_2]$ es tal que su intersección con $[K,\infty)$ es no nula. Se sigue 
+         entonces que existen puntos en $[x_1,x_2]$ en donde $x\geq K$, y en consecuencia, $(K-x)^{+}=0$ por lo que la condición 
+         \eqref{eq8} con igualdad se vuelve $Ax^{-2r/\sigma^2}+Bx=0$, lo cual nos dice que 
+         $Ax^{-2r/\sigma^2}=-Bx \iff Ax^{-2r/\sigma^2-1}=-B$, de tal forma que una función de $x$, que 
+         puede tomar infinitos valores (salvo el caso en que $x_2=K$) es igual a una constante. Por lo tanto, 
+         para que la igualdad se de, se debe cumplir que $A=B=0$ y con ello $v$ es idénticamente 0 en $[x_1,x_2]$.
+         \newline
+         
+         Finalmente, suponiendo que no ocurre lo anterior y que $[x_1,x_2] \subseteq [0,K]$, entonces $(K-x)^{+}=K-x$, 
+         de tal forma que la condición \eqref{eq8} con igualdad se vuelve 
+         \[
+            Ax^{-2r/\sigma^2}+Bx=K-x \iff Ax^{-2r/\sigma^2}=K-(B+1)x,   
+         \]
+         y analizando nuevamente la ecuación anterior, nos damos cuenta que, al ser $\frac{2r}{\sigma^2}$ un número positivo, 
+         se tiene que una curva del tipo hipérbola está igualada a una recta con pendiente negativa y ordenada al origen $K$,
+         por lo que a lo más, se podrían intersecar en dos puntos. Pero la igualdad anterior ocurre para cualquier punto 
+         en $[x_1,x_2]\subseteq[0,K]$, entonces la igualdad ocurre solamente si $A=B=0$ y nuevamente $v$ es idénticamente 0. La continuidad de $v$ y su derivada $v'$' 
+         nos asegura que este comportamiento se preserva en los extremos del intervalo $[x_1,x_2]$.
+        \end{proof}
+        \item Use el hecho de que $v(0)$ tiene que ser igual a $K$ para mostrar que no puede existir un número $x_2>0$ 
+        tal que $v(x)$ satisface 
+        \begin{equation}\label{eq9}
+            rv(x)-rxv'(x)-\frac{1}{2}\sigma^2x^2v''(x)\geq0
+        \end{equation}
+        con igualdad en $[0,x_2]$.
+        \begin{proof} 
+          Supongamos que tal número $x_2>0$ existe y nótese que, si $v(x)$ satisface \eqref{eq9} con igualdad en $[0,x_2]$, 
+          entonces por el inciso anterior, $v$ debe ser de la forma $v(x)=Ax^{-2r/\sigma^2}+Bx$, la cual 
+          es una función que se anula en 0. Luego, $v(0)=0$, y este comportamiento 
+          se preserva en los extremos del intervalo $[0,x_2]$ de acuerdo al ítem anterior. Pero sabemos que $v(0)=K>0$, 
+          por lo que no es posible que exista $x_2>0$ con dicha propiedad.  
+         \end{proof}
+        \item Explique por qué $v(x)$ no puede satisfacer $\eqref{eq8}$ con igualdad para todo $x\geq0$.\\
+        
+         \textbf{Solución:} Esto se explica porque, de ser el caso que \eqref{eq8} se cumpla en todo $[0,\infty)$, entonces 
+         $v(x)=(K-x)^{+}$, la cual no es una función derivable en el punto $x=K$. O bien, aún ignorando que 
+         la función no sea derivable en ese punto, la derivada de la misma no sería continua. Por lo tanto, 
+         no puede darse la igualdad en todo $[0,\infty)$. 
+
+        \item Explique por qué $v(x)$ no puede satisfacer $\eqref{eq9}$ con igualdad para todo $x\geq0$.\\
+        
+        \textbf{Solución:} Esto se explica justamente en el ítem 3, ya que de satisfacerse \eqref{eq9} con igualdad 
+        para todo $x\geq0$, en particular se satisface para algún intervalo $[0,x_2]$, con $x_2>0$, pero esto no es posible.\\
+
+        \item De los dos ítems anteriores y la condición \textit{Para toda $x\geq0$, la igualdad se da en \eqref{eq8} o en \eqref{eq9}}. Vemos que 
+        $v(x)$ a veces satisface $\eqref{eq8}$ con igualdad y otras no la satisface con igualdad, en 
+        cuyo caso debe satisfacer $\eqref{eq9}$ con igualdad. Del ítem 2 y 3 vemos que la 
+        región en la cual $v(x)$ no satisface $\eqref{eq8}$ con igualdad y satisface $\eqref{eq9}$ con igualdad 
+        no puede ser un intervalo $[x_1,x_2]$ con $0<x_1<x_2<\infty$, y tampoco puede ser una unión 
+        disjunta de intervalos de esta forma. Entonces tiene que ser un semi-eje $[x_1,\infty)$, con $x_1>0$. En 
+        la región $[0,x_1]$, $v(x)$ satisface $\eqref{eq8}$ con igualdad. Muestre que $x_1$ tiene que ser igual 
+        a $L_*$ y que $v(x)$ tiene que estar dada por $v_{L_*}(x)$ dada por $\eqref{eq1}$.
+        \begin{proof} 
+          Notamos que se tiene que satisfacer $x_1=L_*$. En efecto. Dado que $v$ tiene que ser una función 
+          derivable con derivada continua y acotada, se tiene que tener que $v(x)=(K-x)^{+}$ debe coincidir 
+          por derecha con $v(x)$ dada por $Ax^{-\frac{2r}{\sigma^2}}+Bx$, y a su vez, la derivada 
+          de $v(x)$ tiene que ser continua, por lo que las expresiones de \eqref{eq8} y \eqref{eq9} y sus derivadas 
+          deben ser iguales. Nótese que imponiendo las condiciones de consistencia, tenemos que 
+          \[
+          v(x)=K-x=Ax^{-2r/\sigma^2}+Bx \qquad \text{ y } v'(x)=-1=Ax^{-2r/\sigma^2-1}\left(\frac{-2r}{\sigma^2}\right)+B, 
+          \]
+          de tal forma que resolviendo para $x$, se tiene que $x=\frac{2r}{2r+\sigma^2}K$, justo como 
+          se buscaba.
+         \end{proof}
+    \end{enumerate}
+    \item[\textbf{4.}] \textbf{(Put Americano perpetuo que paga dividendos).} Considere un put Americano perpetuo 
+    con base en un movimiento Browniano geométrico pagando dividendos a tasa constante $a>0$. El diferencial 
+    de este activo está dado por 
+    \[
+    dS(t)=(r-a)S(t)dt+\sigma(t)d\widetilde{W}(t), 
+    \]
+    donde $\widetilde{W}(t)$ es un movimiento Browniano bajo la medida de riesgo neutral $\widetilde{\P}$.
+    \begin{enumerate}
+        \item Suponga que adoptamos la estrategia de ejercer el put oen el primer instante 
+        que el precio alcanza o está por debajo de $L$. ¿Cuál es el payoff descontado 
+        esperado bajo la medida de riesgo neutral de esta estrategia (tal como lo hicimos en clase 
+        sin dividendos)? Escriba esto como una función $v_L(x)$ del precio inicial del activo $x$. 
+        (Sugerencia: defina la constante positiva 
+        \[
+            \gamma=\frac{1}{\sigma^2}\left(r-a-\frac{1}{2}\sigma^2\right)+\frac{1}{\sigma}\sqrt{\frac{1}{\sigma^2}\left(r-a-\frac{1}{2}\sigma^2\right)^2+2r}
+        \]
+        y escriba $v_L(x)$ usando $\gamma$).
+        \begin{proof} 
+          Resolviendo la ecuación diferencial $dS(t)=(r-a)S(t)dt+\sigma S(t)d\widetilde{W}(t)$, tenemos que 
+          
+          \[
+          S(t)=S(0)\exp \left\{\sigma \widetilde{W}(t)+(r-a-\frac{1}{2}\sigma^2)t\right\}  
+          \]
+          Denotando por $\alpha:=r-a-\frac{1}{2}\sigma^2$, notamos que 
+          la función $v_L(x)$ debe estar dada por $K-x$ si $x\in [0,L]$ (justamente ejercemos la opción 
+          si es que desde un inicio la opción al tiempo 0 es $S(0)=x\leq L$), y buscamos ahora 
+          la expresión para la opción cuando $S(0)=x>L$. Nótese que $S(t)=L$ si y solo si
+          \[
+            x\exp \left\{\sigma\widetilde{W}(t)+\alpha t\right\}=L,
+          \]
+          lo cual ocurre si y solo si 
+          \[
+          -\sigma\widetilde{W}(t)-\frac{\alpha}{\sigma} t=\frac{1}{\sigma}\ln(\frac{x}{L}), 
+          \]
+          y aplicamos el teorema visto en clase para el movimiento browniano $-\widetilde{W}(t)$ y 
+          el término de deriva $-\frac{\alpha}{\sigma} t$. En este caso usamos 
+          que $\lambda=r$, $\mu=-\frac{\alpha}{\sigma}$ y $m=\frac{1}{\sigma}\ln \left(\frac{x}{L}\right)$. Esto nos da como resultado
+            que 
+            \[
+            \widetilde{\E}\left[e^{-r\tau_m}\right]=e^{-m(-\mu+\sqrt{\mu^2+2\lambda})}    
+            \]
+            lo cual sustituyéndolo por las cantidades mencionadas antes, nos origina que 
+            \[
+            \widetilde{\E}\left[e^{-r\tau_L}\right]=\exp \left\{-\frac{1}{\sigma}\ln \left(\frac{x}{L}\right)(\frac{\alpha}{\sigma}+\sqrt{\frac{\alpha^2}{\sigma^2}+2r})\right\}=\exp \left\{-\ln \left(\frac{x}{L}\right)(\frac{\alpha}{\sigma{2}}+\frac{1}{\sigma}\sqrt{\frac{\alpha^2}{\sigma^2}+2r})\right\}=\left(\frac{x}{L}\right)^{-\gamma},
+            \]
+            y esta última es la expresión del precio inicial del activo $S(0)=x$.
+         \end{proof}
+        \item Determine $L_*$ el valor de $L$ que maximiza el payoff descontado esperado 
+        bajo la medida de riesgo neutral $v_L(x)$ calculado en el ítem anterior.
+        \begin{proof} 
+          Para esto, tomamos la expresión $v(S(0))=v(x)=(K-L)(\frac{x}{L})^{-\gamma}$ y derivamos en términos de $L$ para 
+          obtener el máximo. Fijamos el valor de $x$ (pues el máximo en $L$ debe funcionar para todos los $x$), y notamos que 
+          \[
+          g(L)=(K-L)L^{\gamma}  
+          \]
+          debe ser maximizada. Pero esta función encuentra su máximo en 
+          \[
+          g'(L)=\gamma(K-L)L^{\gamma-1}-L^{gamma}=0   \iff \gamma(K-L)=L \iff L=\frac{\gamma K}{\gamma+1},
+          \]
+          y por lo tanto $L=\frac{\gamma}{\gamma+1}K$ es la barrera óptima a elegir para ejercer el Put.
+
+
+
+         \end{proof}
+        \item Muestre que para cualquier precio inicial $S(0)=x$ del activo, el proceso $e^{-rt}v_{L_*}(S(t))$ es una 
+        supermartingala bajo $\widetilde{\P}$. Muestre que si $S(0)=x>L_*$ y $e^{-rt}v_{L_*}(S(t))$ es 
+        parado al primer instante en el que el precio del activo llega a $L_*$, entonces 
+        la supermartingala parada es una martingala. (Sugerencia: muestre que 
+        \[
+        r+(r-a)\gamma-\frac{1}{2}\sigma^2\gamma(\gamma+1)=0).  
+        \]
+        \item Muestre que, para cualquier precio inicial del activo $S(0)=x$, 
+        \[
+        v_{L_*}(x)=\max_{\tau \in \mathcal{T}}\widetilde{\E}\left[e^{-r\tau}(K-S(\tau))\right],    
+        \]
+        donde $\mathcal{T}$ es el conjunto de todos los tiempos de paro.
+    \end{enumerate}
+    \end{itemize}
+\end{document}
